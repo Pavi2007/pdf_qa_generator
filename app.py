@@ -14,7 +14,7 @@ def extract_text(pdf_file):
     return text
 
 if uploaded_file:
-    st.success("PDF Uploaded Successfully!")
+    st.success("PDF Uploaded Successfully!!")
 
     if st.button("Generate Questions"):
         with st.spinner("Generating Questions..."):
