@@ -1,29 +1,111 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Generated Questions</title>
-    <style>
-      body { font-family: Arial, sans-serif; max-width:800px; margin:40px auto; }
-      .card { border:1px solid #ddd; padding:20px; border-radius:8px; }
-      ol { margin-left: 1.2rem; }
-      a { display:inline-block; margin-top:12px; }
-    </style>
-  </head>
-  <body>
-    <h1>Generated Questions</h1>
-    <div class="card">
-      {% if questions %}
-        <ol>
-          {% for q in questions %}
-            <li>{{ q }}</li>
-          {% endfor %}
-        </ol>
-      {% else %}
-        <p>No questions generated.</p>
-      {% endif %}
-      <a href="/">← Back</a>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Generated Questions | AI Practice Generator</title>
+
+  <style>
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      max-width: 900px;
+      margin: 40px auto;
+      background-color: #f4f6f9;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+
+    .card {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+    }
+
+    .question-count {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 20px;
+    }
+
+    ol {
+      padding-left: 20px;
+    }
+
+    li {
+      margin-bottom: 15px;
+      line-height: 1.6;
+      background: #f9fafc;
+      padding: 12px;
+      border-radius: 8px;
+      border-left: 4px solid #007bff;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 30px;
+      color: #888;
+      font-style: italic;
+    }
+
+    .back-btn {
+      display: inline-block;
+      margin-top: 25px;
+      padding: 10px 16px;
+      background-color: #007bff;
+      color: white;
+      text-decoration: none;
+      border-radius: 6px;
+      transition: 0.3s;
+    }
+
+    .back-btn:hover {
+      background-color: #0056b3;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        margin: 20px;
+      }
+      .card {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<h1>📄 Generated Questions</h1>
+
+<div class="card">
+
+  {% if questions %}
+    
+    <div class="question-count">
+      Total Questions Generated: <strong>{{ questions|length }}</strong>
     </div>
-  </body>
+
+    <ol>
+      {% for q in questions %}
+        <li>{{ q }}</li>
+      {% endfor %}
+    </ol>
+
+  {% else %}
+
+    <div class="empty-state">
+      ⚠ No questions were generated. Please try uploading another PDF.
+    </div>
+
+  {% endif %}
+
+  <a href="/" class="back-btn">← Upload Another PDF</a>
+
+</div>
+
+</body>
 </html>
