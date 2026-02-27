@@ -11,7 +11,8 @@ class QuestionGenerator:
             model=model_name,
             tokenizer=self.tokenizer
         )
-
+        model_max = getattr(self.tokenizer, "model_max_length", 512)
+        self.safe_tokens = max(64, model_max - 128)
         # Determine a safe token window for chunks (reserve tokens for the prompt/generation)
         
 
