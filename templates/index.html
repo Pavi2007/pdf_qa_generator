@@ -1,24 +1,115 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>AI Practice Question Generator</title>
-    <style>
-      body { font-family: Arial, sans-serif; max-width:800px; margin:40px auto; }
-      .card { border:1px solid #ddd; padding:20px; border-radius:8px; }
-      input[type=file] { display:block; margin-top:10px; }
-      button { margin-top:12px; padding:8px 14px; }
-    </style>
-  </head>
-  <body>
-    <h1>📚 AI Practice Question Generator</h1>
-    <div class="card">
-      <form action="/generate" method="post" enctype="multipart/form-data">
-        <label for="pdf">Upload academic PDF</label>
-        <input type="file" id="pdf" name="pdf" accept="application/pdf" required />
-        <button type="submit">Generate Questions</button>
-      </form>
-    </div>
-  </body>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI Practice Question Generator</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 40px auto;
+      background-color: #f4f6f9;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    .card {
+      border: 1px solid #ddd;
+      padding: 25px;
+      border-radius: 10px;
+      background: white;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+
+    input[type=file] {
+      display: block;
+      margin-top: 10px;
+    }
+
+    button {
+      margin-top: 15px;
+      padding: 10px 16px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .error {
+      color: red;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+
+    .success {
+      color: green;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+
+<body>
+
+<h1>📚 AI Practice Question Generator</h1>
+
+<div class="card">
+  <form id="uploadForm" action="/generate" method="post" enctype="multipart/form-data">
+    
+    <label for="pdf"><strong>Upload academic PDF</strong></label>
+    <input type="file" id="pdf" name="pdf" accept="application/pdf" required />
+
+    <button type="submit">Generate Questions</button>
+
+    <div id="message"></div>
+
+  </form>
+</div>
+
+<script>
+  const form = document.getElementById("uploadForm");
+  const pdfInput = document.getElementById("pdf");
+  const messageDiv = document.getElementById("message");
+
+  form.addEventListener("submit", function(event) {
+    
+    messageDiv.innerHTML = ""; // Clear previous messages
+
+    const file = pdfInput.files[0];
+
+    if (!file) {
+      event.preventDefault();
+      messageDiv.innerHTML = "<div class='error'>⚠ Please select a PDF file.</div>";
+      return;
+    }
+
+    // File type validation
+    if (file.type !== "application/pdf") {
+      event.preventDefault();
+      messageDiv.innerHTML = "<div class='error'>❌ Only PDF files are allowed.</div>";
+      return;
+    }
+
+    // File size validation (max 10MB)
+    if (file.size > 10 * 1024 * 1024) {
+      event.preventDefault();
+      messageDiv.innerHTML = "<div class='error'>❌ File size must be less than 10MB.</div>";
+      return;
+    }
+
+    // If all validations pass
+    messageDiv.innerHTML = "<div class='success'>⏳ Generating questions... Please wait.</div>";
+  });
+</script>
+
+</body>
 </html>
