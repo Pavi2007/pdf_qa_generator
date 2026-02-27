@@ -13,8 +13,7 @@ class QuestionGenerator:
         )
 
         # Determine a safe token window for chunks (reserve tokens for the prompt/generation)
-        model_max = getattr(self.tokenizer, "model_max_length", 512)
-        self.safe_tokens = max(64, model_max - 128)
+        
 
     def clean_text(self, text):
         text = re.sub(r'\s+', ' ', text)
