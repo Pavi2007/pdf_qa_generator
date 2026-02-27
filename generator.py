@@ -22,7 +22,8 @@ class QuestionGenerator:
 
     def chunk_text(self, text):
         # Token-aware chunking to avoid exceeding model max length
-        
+        token_ids = self.tokenizer.encode(text, add_special_tokens=False)
+        chunks = []
         i = 0
         while i < len(token_ids):
             seg = token_ids[i:i + self.safe_tokens]
