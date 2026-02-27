@@ -1,35 +1,46 @@
-from transformers import pipeline
+from transformers import pipeline, AutoTokenizer
 import re
 
+
 class QuestionGenerator:
-    def __init__(self):
+    def __init__(self, model_name="google/flan-t5-base"):
+        self.model_name = model_name
+        self.tokenizer = AutoTokenizer.from_pretrained(model_name)
         self.generator = pipeline(
             "text2text-generation",
-            model="google/flan-t5-base"
+            model=model_name,
+            tokenizer=self.tokenizer
         )
+
+        # Determine a safe token window for chunks (reserve tokens for the prompt/generation)
+        model_max = getattr(self.tokenizer, "model_max_length", 512)
+        self.safe_tokens = max(64, model_max - 128)
 
     def clean_text(self, text):
         text = re.sub(r'\s+', ' ', text)
         return text.strip()
 
-    def chunk_text(self, text, chunk_size=500):
-        words = text.split()
+    def chunk_text(self, text):
+        # Token-aware chunking to avoid exceeding model max length
+        token_ids = self.tokenizer.encode(text, add_special_tokens=False)
         chunks = []
-        for i in range(0, len(words), chunk_size):
-            chunks.append(" ".join(words[i:i+chunk_size]))
+        i = 0
+        while i < len(token_ids):
+            seg = token_ids[i:i + self.safe_tokens]
+            chunk = self.tokenizer.decode(seg, skip_special_tokens=True, clean_up_tokenization_spaces=True)
+            chunks.append(chunk)
+            i += self.safe_tokens
         return chunks
 
     def generate_questions(self, text):
-
         cleaned = self.clean_text(text)
-        chunks = self.chunk_text(cleaned, chunk_size=500)
+        chunks = self.chunk_text(cleaned)
 
         all_questions = []
         seen_questions = set()
         question_number = 1
 
         for chunk in chunks:
-
             prompt = f"""
 Generate 5 clear university-level short-answer questions 
 from the following academic content.
@@ -56,7 +67,6 @@ Content:
 
             for q in questions:
                 q = q.strip()
-
                 if len(q) > 15 and q not in seen_questions:
                     seen_questions.add(q)
                     all_questions.append(f"{question_number}. {q}")

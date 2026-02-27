@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>AI Practice Question Generator</title>
+    <style>
+      body { font-family: Arial, sans-serif; max-width:800px; margin:40px auto; }
+      .card { border:1px solid #ddd; padding:20px; border-radius:8px; }
+      input[type=file] { display:block; margin-top:10px; }
+      button { margin-top:12px; padding:8px 14px; }
+    </style>
+  </head>
+  <body>
+    <h1>📚 AI Practice Question Generator</h1>
+    <div class="card">
+      <form action="/generate" method="post" enctype="multipart/form-data">
+        <label for="pdf">Upload academic PDF</label>
+        <input type="file" id="pdf" name="pdf" accept="application/pdf" required />
+        <button type="submit">Generate Questions</button>
+      </form>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Generated Questions</title>
+    <style>
+      body { font-family: Arial, sans-serif; max-width:800px; margin:40px auto; }
+      .card { border:1px solid #ddd; padding:20px; border-radius:8px; }
+      ol { margin-left: 1.2rem; }
+      a { display:inline-block; margin-top:12px; }
+    </style>
+  </head>
+  <body>
+    <h1>Generated Questions</h1>
+    <div class="card">
+      {% if questions %}
+        <ol>
+          {% for q in questions %}
+            <li>{{ q }}</li>
+          {% endfor %}
+        </ol>
+      {% else %}
+        <p>No questions generated.</p>
+      {% endif %}
+      <a href="/">← Back</a>
+    </div>
+  </body>
+</html>
